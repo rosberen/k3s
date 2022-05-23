@@ -1,0 +1,37 @@
+ansible_user: root
+
+#Add additional hostname or IP as a Subject Alternative Name in the TLS cert.
+cluster_name: "test.cluster"
+
+#Cluster Domain. Will be used by default "cluster.local" if not set.
+cluster_domain: "test.local"
+
+k3s_version: v1.21.2+k3s1
+
+# ipvs or iptables alowed
+# iptables will be used by default if not set
+#
+# if ipvs-scheduler not configured, then round-robin (rr) is the default value.
+#     dh:  destination hashing
+#     lc:  least connection
+#     nq:  never queue
+#     rr:  round-robin
+#     sed: shortest expected delay
+#     sh:  source hashing
+#     wrr: weighted round robin - new connections are assigned to each realserver in turn 
+
+kubeproxy:
+  - proxy-mode=ipvs
+  - ipvs-scheduler=rr
+
+# flannel_interface: ens160
+
+kubeletargs: 
+  - container-runtime=remote
+  - container-log-max-files=2
+  - container-log-max-size=10Mi
+
+# valid items: coredns, servicelb, traefik, local-storage, metrics-server
+disable:
+  - traefik
+  - servicelb
